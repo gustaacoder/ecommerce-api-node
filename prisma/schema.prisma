@@ -13,7 +13,7 @@ model Product {
   price Float
   category String
   image String
-  orders OrderProduct[]  // Relação indireta com Order
+  orders OrderProduct[]
 }
 
 model User {
