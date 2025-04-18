@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
-app.use('/api/products', userRoutes);
-app.use('/api/products', orderRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
