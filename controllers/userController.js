@@ -5,7 +5,11 @@ const createUser = async (req, res) => {
   const { name, email } = req.body;
   try {
     const user = await prisma.user.create({
-      data: { name, email }
+      data: { 
+        name,
+        email,
+        password
+      },
     });
     res.status(201).json(user);
   } catch (error) {
