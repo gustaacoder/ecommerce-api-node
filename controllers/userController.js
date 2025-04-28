@@ -2,18 +2,34 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createUser = async (req, res) => {
-  const { name, email } = req.body;
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
+  }
+
   try {
     const user = await prisma.user.create({
       data: { 
         name,
         email,
         password
-      },
+      }
     });
-    res.status(201).json(user);
+    res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao criar usuário' });
+    if (error.code === 'P2002') {
+      return res.status(400).json({ error: "Email já cadastrado" });
+    }
+    res.status(500).json({ 
+      error: 'Erro ao criar usuário',
+      details: process.env.NODE_ENV === 'development' ? error.message : null
+    });
   }
 };
 
